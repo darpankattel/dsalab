@@ -1,3 +1,5 @@
+// 4.	Check the paired parenthesis in mathematical expression
+
 #include <iostream>
 #include <cstring>
 using namespace std;
@@ -35,12 +37,6 @@ class Stack {
         }
         return arr[top--];
     }
-    // T peek () {
-    //     if (top == -1) {
-    //         throw typename Exceptions::StackUnderflow();
-    //     }
-    //     return arr[top];
-    // }
     bool is_empty () {
         return bool(top < 0);
     }

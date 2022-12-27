@@ -1,9 +1,12 @@
+// 1.	Perform push and pop operations in stack
+
 #include <iostream>
 using namespace std;
 
+template <class T>
 class Stack {
     private:
-    int* arr;
+    T* arr;
     int top;
     int size;
     public:
@@ -19,30 +22,30 @@ class Stack {
     Stack (int size) {
         top = -1;
         this->size = size;
-        arr = new int[size];
+        arr = new T[size];
     }
-    void push (int elem) {
+    void push (T elem) {
         if (top == size-1) {
-            throw Exceptions::StackOverflow();
+            throw typename Exceptions::StackOverflow();
         }
         arr[++top] = elem;
     }
-    int pop () {
+    T pop () {
         if (top == -1) {
-            throw Exceptions::StackUnderflow();
+            throw typename Exceptions::StackUnderflow();
         }
         return arr[top--];
     }
     int peek () {
         if (top == -1) {
-            throw Exceptions::StackUnderflow();
+            throw typename Exceptions::StackUnderflow();
         }
         return arr[top];
     }
 };
 
 int main () {
-    Stack* memory = new Stack(4);
+    Stack<int>* memory = new Stack<int>(4);
 
     try {    // pushing
         memory->push(1);
@@ -69,9 +72,9 @@ int main () {
         // raises Exceptions::StackUnderflow
         // cout << memory->peek() << endl;
         // memory->pop();
-    } catch (Stack::Exceptions::StackOverflow err) {
+    } catch (Stack<int>::Exceptions::StackOverflow err) {
         cout << err.get_message();
-    } catch (Stack::Exceptions::StackUnderflow err) {
+    } catch (Stack<int>::Exceptions::StackUnderflow err) {
         cout << err.get_message();
     } catch (...) {
         cout << "Unknown error";
