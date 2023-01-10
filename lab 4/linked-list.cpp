@@ -37,13 +37,13 @@ class LinkedList {
         head = nullptr;
     }
 
-    void insertAtBeginning(int data) {
+    void insertAtBeginning(T data) {
         Node<T>* newNode = new Node<T>(data);
         newNode->next = head;
         head = newNode;
     }
 
-    void insertAtEnd(int data) {
+    void insertAtEnd(T data) {
         Node<T>* newNode = new Node<T>(data);
         if (head == nullptr) {
             head = newNode;
@@ -56,7 +56,13 @@ class LinkedList {
         current->next = newNode;
     }
 
-    void insertAfter(int data, Node<T>* prev) {
+    void insertAfter(T data, int index) {
+        Node<T>* prev = head;
+        int i = 0;
+        while (i < index) {
+            prev = prev -> next;
+            i++;
+        }
         if (prev == nullptr) {
             std::cout << "Previous node cannot be null" << std::endl;
             return;
@@ -66,7 +72,13 @@ class LinkedList {
         prev->next = newNode;
     }
 
-    void insertBefore(int data, Node<T>* next) {
+    void insertBefore(T data,  int index) {
+        Node<T>* next = head;
+        int i = 0;
+        while (i < index) {
+            next = next -> next;
+            i++;
+        }
         if (next == nullptr) {
             std::cout << "Next node cannot be null" << std::endl;
             return;
@@ -107,7 +119,13 @@ class LinkedList {
         current->next = nullptr;
     }
 
-    void deleteAfter(Node<T>* prev) {
+    void deleteAfter(int index) {
+        Node<T>* prev = head;
+        int i = 0;
+        while (i < index) {
+            prev = prev -> next;
+            i++;
+        }
         if (prev == nullptr || prev->next == nullptr) {
             return;
         }
@@ -133,21 +151,23 @@ int main() {
     list.insertAtBeginning(1);
     list.insertAtEnd(4);
     list.insertAtEnd(5);
-    list.insertAfter(2.5, list.head->next);
-    list.insertBefore(1.5, list.head->next->next);
+    list.insertAfter(2.5, 1);
+    list.insertBefore(1.5, 2);
 
     // Printing the list
-    std::cout << "Linked list: ";
+    cout << "Linked list: ";
     list.printList();
+    // 1 2 1.5 2.5 3 4 5
 
     // Deleting nodes
     list.deleteFromBeginning();
     list.deleteFromEnd();
-    list.deleteAfter(list.head->next);
+    list.deleteAfter(1);
 
     // Printing the list
-    std::cout << "Linked list after deletions: ";
+    cout << "Linked list after deletions: ";
     list.printList();
+    // 2 1.5 3 4
 
     return 0;
 }
