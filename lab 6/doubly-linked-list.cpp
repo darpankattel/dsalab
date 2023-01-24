@@ -12,127 +12,237 @@
 //         d.	DELETE NODE BEFORE SPECIFIC NODE
 
 #include <iostream>
-
+#include <cstdlib>
 using namespace std;
+
 struct Node {
-  int data;
-  Node* prev;
-  Node* next;
+    double data;
+    Node* prev;
+    Node* next;
 };
 
 class LinkedList {
- private:
-  Node* head;  // pointer to head node.
+    private:
+    Node* head;  // pointer to head node.
 
- public:
-  // Constructor
-  LinkedList() {
-    head = NULL;
-  }
-
-  // Creates a new node and returns a pointer to it.
-  Node* GetNewNode(int x) {
-    Node* newNode = new Node();
-    newNode->data = x;
-    newNode->prev = NULL;
-    newNode->next = NULL;
-    return newNode;
-  }
-
-  // Inserts a node at the head of the linked list.
-  void InsertAtHead(int x) {
-    Node* newNode = GetNewNode(x);
-    if (head == NULL) {
-      head = newNode;
-      return;
+    public:
+    // Constructor
+    LinkedList() {
+        head = NULL;
     }
-    head->prev = newNode;
-    newNode->next = head;
-    head = newNode;
-  }
 
-  // Inserts a node at the tail of the linked list.
-  void InsertAtTail(int x) {
-    Node* temp = head;
-    Node* newNode = GetNewNode(x);
-    if (head == NULL) {
-      head = newNode;
-      return;
+    Node* GetNewNode(double x) {
+        Node* newNode = new Node();
+        newNode->data = x;
+        newNode->prev = NULL;
+        newNode->next = NULL;
+        return newNode;
     }
-    while (temp->next != NULL) temp = temp->next;  // Go to last node.
-    temp->next = newNode;
-    newNode->prev = temp;
-  }
 
-  // Inserts a node after a given node.
-  void InsertAfter(Node* prevNode, int x) {
-    if (prevNode == NULL) {
-      cout << "the given previous node cannot be NULL" << endl;
-      return;
+    void InsertAtHead(double x) {
+        Node* newNode = GetNewNode(x);
+        if (head == NULL) {
+            head = newNode;
+            return;
+        }
+        head->prev = newNode;
+        newNode->next = head;
+        head = newNode;
     }
-    Node* newNode = GetNewNode(x);
-    newNode->next = prevNode->next;
-    prevNode->next = newNode;
-    newNode->prev = prevNode;
-    if (newNode->next != NULL) newNode->next->prev = newNode;
-  }
 
-  // Inserts a node before a given node.
-  void InsertBefore(Node* nextNode, int x) {
-    if (nextNode == NULL) {
-      cout << "the given next node cannot be NULL" << endl;
-      return;
+    void InsertAtTail(double x) {
+        Node* temp = head;
+        Node* newNode = GetNewNode(x);
+        if (head == NULL) {
+            head = newNode;
+            return;
+        }
+        while (temp->next != NULL) temp = temp->next;  // Go to last node.
+        temp->next = newNode;
+        newNode->prev = temp;
     }
-    Node* newNode = GetNewNode(x);
-    newNode->prev = nextNode->prev;
-    nextNode->prev = newNode;
-    newNode->next = nextNode;
-    if (newNode->prev != NULL) newNode->prev->next = newNode;
-    else head = newNode;
-  }
 
-  // Deletes a node from the head of the linked list.
-  void DeleteAtHead() {
-    Node* temp = head;
-    if (head == NULL) return;  // empty list
-    if (head->next != NULL) head->next->prev = NULL;
-    head = head->next;
-    delete temp;
-  }
-
-  // Deletes a node from the tail of the linked list.
-  // Deletes a node from the tail of the linked list.
-  void DeleteAtTail() {
-    Node* temp = head;
-    if (head == NULL) return;  // empty list
-    if (head->next == NULL) {
-      delete head;
-      head = NULL;
-      return;
+    void InsertAfter(int index, double x) {
+        Node* prevNode = head;
+        for (int i = 0; i < index; i++) {
+          prevNode = prevNode -> next;
+        }
+        if (prevNode == NULL) {
+            cout << "the given previous node cannot be NULL" << endl;
+            return;
+        }
+        Node* newNode = GetNewNode(x);
+        newNode->next = prevNode->next;
+        prevNode->next = newNode;
+        newNode->prev = prevNode;
+        if (newNode->next != NULL) newNode->next->prev = newNode;
     }
-    while (temp->next != NULL) temp = temp->next;  // Go to last node.
-    temp->prev->next = NULL;
-    delete temp;
-  }
+
+    void InsertBefore(int index, double x) {
+        Node* nextNode = head;
+        for (int i = 0; i < index; i++) {
+          nextNode = nextNode -> next;
+        }
+        if (nextNode == NULL) {
+            cout << "the given next node cannot be NULL" << endl;
+            return;
+        }
+        Node* newNode = GetNewNode(x);
+        newNode->prev = nextNode->prev;
+        nextNode->prev = newNode;
+        newNode->next = nextNode;
+        if (newNode->prev != NULL) newNode->prev->next = newNode;
+        else head = newNode;
+    }
+
+    void DeleteAtHead() {
+        Node* temp = head;
+        if (head == NULL) return;  // empty list
+        if (head->next != NULL) head->next->prev = NULL;
+        head = head->next;
+        delete temp;
+    }
+
+    void DeleteAtTail() {
+        Node* temp = head;
+        if (head == NULL) return;  // empty list
+        if (head->next == NULL) {
+            delete head;
+            head = NULL;
+            return;
+        }
+        while (temp->next != NULL) temp = temp->next;  // Go to last node.
+        temp->prev->next = NULL;
+        delete temp;
+    }
 
 
-  // Deletes a node after a given node.
-  void DeleteAfter(Node* prevNode) {
-    if (prevNode == NULL || prevNode->next == NULL) return;
-    Node* temp = prevNode->next;
-    prevNode->next = temp->next;
-    if (temp->next != NULL) temp->next->prev = prevNode;
-    delete temp;
-  }
+    void DeleteAfter(int index) {
+        Node* prevNode = head;
+        for (int i = 0; i < index; i++) {
+          prevNode = prevNode -> next;
+        }
+        if (prevNode == NULL || prevNode->next == NULL) return;
+        Node* temp = prevNode->next;
+        prevNode->next = temp->next;
+        if (temp->next != NULL) temp->next->prev = prevNode;
+        delete temp;
+    }
 
-  // Deletes a node before a given node.
-  void DeleteBefore(Node* nextNode) {
-    if (nextNode == NULL || nextNode->prev == NULL) return;
-    Node* temp = nextNode->prev;
-    nextNode->prev = temp->prev;
-    if (temp->prev != NULL) temp->prev->next = nextNode;
-    else head = nextNode;
-    delete temp;
-  }
-
+    void DeleteBefore(int index) {
+        Node* nextNode = head;
+        for (int i = 0; i < index; i++) {
+          nextNode = nextNode -> next;
+        }
+        if (nextNode == NULL || nextNode->prev == NULL) return;
+        Node* temp = nextNode->prev;
+        nextNode->prev = temp->prev;
+        if (temp->prev != NULL) temp->prev->next = nextNode;
+        else head = nextNode;
+        delete temp;
+    }
+    void print() {
+        Node* temp = head;
+        if (temp == nullptr) return;
+        while (temp != nullptr) {
+          cout << temp -> data << " ";
+          temp = temp -> next;
+        }
+        cout << endl;
+    }
 };
+
+// int main () {
+//     LinkedList* list = new LinkedList();
+//     list -> InsertAtHead(12);
+//     list -> InsertAtHead(11);
+//     list -> InsertAtTail(13);
+
+//     list -> print();
+
+//     list -> InsertAfter(1, 12.5);
+//     list -> InsertBefore(3, 12.7);
+
+//     list -> print();
+
+//     list -> DeleteAtHead();
+//     list -> DeleteAtTail();
+
+//     list -> print();
+
+//     list -> DeleteAfter(1);
+//     list -> DeleteBefore(1);
+
+//     list -> print();
+
+//     return 0;
+// }
+
+int main () {
+    LinkedList* list = new LinkedList();
+    cout << "Doubly Linear Linked List" << endl;
+    char entered;
+    double data;
+    int index;
+    while (true)
+    {
+        cout << "Enter the numbers for action:" << endl
+            << "1. Insert at head" << endl
+            << "2. Insert at tail" << endl
+            << "3. Insert after index" << endl
+            << "4. Insert before index" << endl
+            << "5. Delete at head" << endl
+            << "6. Delete at tail" << endl
+            << "7. Delete after index" << endl
+            << "8. Delete before index" << endl;
+        cin >> entered;
+        switch (entered)
+        {
+        case '1':
+            cin >> data;
+            list -> InsertAtHead(data);
+            break;
+        case '2':
+            cin >> data;
+            list -> InsertAtTail(data);
+            break;
+        case '3':
+            cout << "Data then Index: ";
+            cin >> data;
+            cin >> index;
+            list -> InsertAfter(index, data);
+            break;
+        case '4':
+            cout << "Data then Index: ";
+            cin >> data;
+            cin >> index;
+            list -> InsertBefore(index, data);
+            break;
+        
+        case '5':
+            list -> DeleteAtHead();
+            break;
+        case '6':
+            list -> DeleteAtTail();
+            break;
+        case '7':
+            cout << "Index: ";
+            cin >> index;
+            list -> DeleteAfter(index);
+            break;
+        case '8':
+            cout << "Index: ";
+            cin >> index;
+            list -> DeleteBefore(index);
+            break;
+        case '9':
+            list -> print();
+            break;
+        
+        default:
+            exit(0);
+        }
+    }
+    
+    return 0;
+}
